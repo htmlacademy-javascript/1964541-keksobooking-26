@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Кирилл Соколов](https://up.htmlacademy.ru/javascript/26/user/1964541).
-* Наставник: `Неизвестно`.
+* Наставник: [Артем Рудов] (https://htmlacademy.ru/profile/artrudov).
 
 ---
 
