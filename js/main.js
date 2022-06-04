@@ -9,5 +9,5 @@ function getRandomFloat(firstNum, secondNum, afterCommaNum) {
   return Math.abs(((Math.random() * (firstNum - secondNum + 1) + secondNum).toFixed(afterCommaNum)));
 }
 
-console.log(getRandomInt(2,3));
-console.log(getRandomFloat(0.5, 4.3, 2));
+getRandomInt(2,3);
+getRandomFloat(0.5, 4.3, 2);
