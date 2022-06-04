@@ -1,16 +1,13 @@
 function getRandomInt(firstNum, secondNum) {
-  if (firstNum < secondNum) {
-    return Math.floor(Math.random() * (secondNum - firstNum + 1)) + firstNum;
-  }
-  return Math.floor(Math.random() * (firstNum - secondNum + 1)) + secondNum;
+  return Math.abs(Math.floor(Math.random() * (secondNum - firstNum + 1)) + firstNum);
 }
 
 function getRandomFloat(firstNum, secondNum, afterCommaNum) {
-  if (firstNum < secondNum) {
-    return (Math.random() * (secondNum - firstNum + 1) + firstNum).toFixed(afterCommaNum);
+  if (firstNum === secondNum) {
+    return firstNum;
   }
-  return (Math.random() * (firstNum - secondNum + 1) + secondNum).toFixed(afterCommaNum);
+  return Math.abs(((Math.random() * (firstNum - secondNum + 1) + secondNum).toFixed(afterCommaNum)));
 }
 
-console.log(getRandomInt(0,5));
-console.log(getRandomFloat(3, 8.5, 3));
+console.log(getRandomInt(2,3));
+console.log(getRandomFloat(0.5, 4.3, 2));
