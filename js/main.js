@@ -6,6 +6,14 @@ function getRandomFloat(firstNum, secondNum, afterCommaNum) {
   return firstNum === secondNum ? firstNum : Math.abs(((Math.random() * (firstNum - secondNum + 1) + secondNum).toFixed(afterCommaNum)));
 }
 
+function shuffleArray(array) { //"Тасование Фишера - Йетса (стырил)"
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i +1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 getRandomInt(2, 3);
 getRandomFloat(0.5, 4.3, 2);
 
@@ -50,18 +58,58 @@ const PHOTOS = [
 ];
 
 
-const createOffer = () => {
+function createRentOffer() {
   const randomCheckTimeIndex = getRandomInt(0, CHECK_TIME.length - 1);
   const randomTitleIndex = getRandomInt(0, TITLE.length - 1);
   const randomTypeIndex = getRandomInt(0, TYPE.length - 1);
   const randomDescripIndex = getRandomInt(0, DESCRIPTION.length - 1);
+  const randomFeatures = shuffleArray(FEATURES).slice(0, getRandomInt(1, FEATURES.length - 1));
+  const randomPhotos = shuffleArray(PHOTOS).slice(0, getRandomInt(1, PHOTOS.length - 1));
+  const randomRoom = getRandomInt(1, 100);
+  function getRandomGuest(room) {
+    switch (room) {
+      case 1:
+        return 1;
+        break;
+      case 2:
+        return getRandomInt(1, 2);
+        break;
+      case 3:
+        return getRandomInt(1, 3);
+        break;
+      case 100:
+        return 'не для гостей';
+        break;
+      default: //решил что максимум гостей будет 10)
+        return getRandomInt(1, 10);
+        break;
+    }
+  }
   const randomAvatar = () => {
-    let randomInt = getRandomInt(1, 10);
-    return randomInt === 10 ? 'img/avatars/user10.png' : 'img/avatars/user0' + randomInt + '.png';
+    const randomInt = getRandomInt(1, 10);
+    return randomInt === 10 ? 'img/avatars/user10.png' : `img/avatars/user0${  randomInt  }.png`;
   };
   const randomLat = getRandomFloat(35.65, 35.70, 5);
   const randomLng = getRandomFloat(139.7, 139.8, 5);
-
+  function getMinPrice(type) {
+    switch (type) {
+      case 'bungalow':
+        return 0;
+        break;
+      case 'flat':
+        return 1000;
+        break;
+      case 'hotel':
+        return 3000;
+        break;
+      case 'house':
+        return 5000;
+        break;
+      case 'palace':
+        return 10000;
+        break;
+    }
+  }
   const author = {
     avatar: randomAvatar()
   };
@@ -73,14 +121,16 @@ const createOffer = () => {
 
   const offer = {
     title: TITLE[randomTitleIndex],
-    address: location.lat + ', ' + location.lng + '',
-    price: getRandomInt(1, 500000),
+    address: `${location.lat  }, ${  location.lng}`,
+    price: getRandomInt(getMinPrice(TYPE[randomTypeIndex]), 100000),
     type: TYPE[randomTypeIndex],
-    rooms: getRandomInt(1, 5),
-    guest: getRandomInt(1, 10),
+    rooms: randomRoom,
+    guest: getRandomGuest(randomRoom),
     checkIn: CHECK_TIME[randomCheckTimeIndex],
     checkOut: CHECK_TIME[randomCheckTimeIndex],
-    description: DESCRIPTION[randomDescripIndex]
+    features: randomFeatures,
+    description: DESCRIPTION[randomDescripIndex],
+    photos: randomPhotos
   };
 
 
@@ -91,4 +141,4 @@ const createOffer = () => {
   };
 };
 
-console.log(createOffer());
+console.log(createRentOffer());
