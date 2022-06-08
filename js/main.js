@@ -34,6 +34,10 @@ function getRandomGuest(room) {
   }
 }
 
+getRandomArrayElement = (array) => {
+  return array[getRandomInt(0, array.length - 1)];
+}
+
 getRandomInt(2, 3);
 getRandomFloat(0.5, 4.3, 2);
 
@@ -86,10 +90,6 @@ const minPrice = {
 }
 
 function createRentOffer() {
-  const randomCheckTimeIndex = getRandomInt(0, CHECK_TIME.length - 1);
-  const randomTitleIndex = getRandomInt(0, TITLE.length - 1);
-  const randomTypeIndex = getRandomInt(0, TYPE.length - 1);
-  const randomDescripIndex = getRandomInt(0, DESCRIPTION.length - 1);
   const features = shuffleArray(FEATURES).slice(0, getRandomInt(1, FEATURES.length - 1));
   const photos = shuffleArray(PHOTOS).slice(0, getRandomInt(1, PHOTOS.length - 1));
   const rooms = getRandomInt(1, 100);
@@ -101,16 +101,16 @@ function createRentOffer() {
       avatar: randomAvatar()
     },
     offer: {
-      title: TITLE[randomTitleIndex],
+      title: getRandomArrayElement(TITLE),
       address: `${lat}, ${lng}`,
-      price: getRandomInt(minPrice[TYPE[randomTypeIndex]], 100000),
-      type: TYPE[randomTypeIndex],
+      price: getRandomInt(minPrice[getRandomArrayElement(TYPE)], 100000),
+      type: getRandomArrayElement(TYPE),
       rooms,
       guest: getRandomGuest(rooms),
-      checkIn: CHECK_TIME[randomCheckTimeIndex],
-      checkOut: CHECK_TIME[randomCheckTimeIndex],
+      checkIn: getRandomArrayElement(CHECK_TIME),
+      checkOut: getRandomArrayElement(CHECK_TIME),
       features,
-      description: DESCRIPTION[randomDescripIndex],
+      description: getRandomArrayElement(DESCRIPTION),
       photos
     },
     location: {
