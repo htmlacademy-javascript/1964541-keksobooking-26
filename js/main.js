@@ -100,34 +100,27 @@ function createRentOffer() {
         return 10000;
     }
   }
-  const author = {
-    avatar: randomAvatar()
-  };
-
-  const location = {
-    lat: randomLat,
-    lng: randomLng
-  };
-
-  const offer = {
-    title: TITLE[randomTitleIndex],
-    address: `${location.lat  }, ${  location.lng}`,
-    price: getRandomInt(getMinPrice(TYPE[randomTypeIndex]), 100000),
-    type: TYPE[randomTypeIndex],
-    rooms: randomRoom,
-    guest: getRandomGuest(randomRoom),
-    checkIn: CHECK_TIME[randomCheckTimeIndex],
-    checkOut: CHECK_TIME[randomCheckTimeIndex],
-    features: randomFeatures,
-    description: DESCRIPTION[randomDescripIndex],
-    photos: randomPhotos
-  };
-
-
   return {
-    author: author,
-    offer: offer,
-    location: location
+    author: {
+      avatar: randomAvatar()
+    },
+    offer: {
+      title: TITLE[randomTitleIndex],
+      address: `${randomLat}, ${randomLng}`,
+      price: getRandomInt(getMinPrice(TYPE[randomTypeIndex]), 100000),
+      type: TYPE[randomTypeIndex],
+      rooms: randomRoom,
+      guest: getRandomGuest(randomRoom),
+      checkIn: CHECK_TIME[randomCheckTimeIndex],
+      checkOut: CHECK_TIME[randomCheckTimeIndex],
+      features: randomFeatures,
+      description: DESCRIPTION[randomDescripIndex],
+      photos: randomPhotos
+    },
+    location: {
+      lat: randomLat,
+      lng: randomLng
+    }
   };
 }
 
