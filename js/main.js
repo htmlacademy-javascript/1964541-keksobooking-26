@@ -8,7 +8,7 @@ function getRandomFloat(firstNum, secondNum, afterCommaNum) {
 
 function shuffleArray(array) { //"Тасование Фишера - Йетса (стырил)"
   for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i +1));
+    const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
@@ -16,7 +16,7 @@ function shuffleArray(array) { //"Тасование Фишера - Йетса (
 
 function randomAvatar(randomInt) {
   randomInt = getRandomInt(1, 10);
-  return randomInt === 10 ? 'img/avatars/user10.png' : `img/avatars/user0${  randomInt  }.png`;
+  return randomInt === 10 ? 'img/avatars/user10.png' : `img/avatars/user0${randomInt}.png`;
 }
 
 function getRandomGuest(room) {
@@ -77,6 +77,13 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
 ];
 
+const minPrice = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000
+}
 
 function createRentOffer() {
   const randomCheckTimeIndex = getRandomInt(0, CHECK_TIME.length - 1);
@@ -88,21 +95,7 @@ function createRentOffer() {
   const rooms = getRandomInt(1, 100);
   const lat = getRandomFloat(35.65, 35.70, 5);
   const lng = getRandomFloat(139.7, 139.8, 5);
-  function getMinPrice(type) {
-    switch (type) {
-      case 'bungalow':
-        return 0;
 
-      case 'flat':
-        return 1000;
-      case 'hotel':
-        return 3000;
-      case 'house':
-        return 5000;
-      case 'palace':
-        return 10000;
-    }
-  }
   return {
     author: {
       avatar: randomAvatar()
@@ -110,7 +103,7 @@ function createRentOffer() {
     offer: {
       title: TITLE[randomTitleIndex],
       address: `${lat}, ${lng}`,
-      price: getRandomInt(getMinPrice(TYPE[randomTypeIndex]), 100000),
+      price: getRandomInt(minPrice[TYPE[randomTypeIndex]], 100000),
       type: TYPE[randomTypeIndex],
       rooms,
       guest: getRandomGuest(rooms),
