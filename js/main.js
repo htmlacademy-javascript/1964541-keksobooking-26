@@ -85,7 +85,7 @@ const minPrice = {
   hotel: 3000,
   house: 5000,
   palace: 10000
-}
+};
 
 function createRentOffer() {
   const features = shuffleArray(FEATURES).slice(0, getRandomInt(1, FEATURES.length - 1));
@@ -119,4 +119,4 @@ function createRentOffer() {
   };
 }
 
-createRentOffer();
+const availableOffers = Array.from({length: 10}, createRentOffer);
