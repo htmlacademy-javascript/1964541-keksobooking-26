@@ -14,6 +14,26 @@ function shuffleArray(array) { //"Тасование Фишера - Йетса (
   return array;
 }
 
+function randomAvatar(randomInt) {
+  randomInt = getRandomInt(1, 10);
+  return randomInt === 10 ? 'img/avatars/user10.png' : `img/avatars/user0${  randomInt  }.png`;
+}
+
+function getRandomGuest(room) {
+  switch (room) {
+    case 1:
+      return 1;
+    case 2:
+      return getRandomInt(1, 2);
+    case 3:
+      return getRandomInt(1, 3);
+    case 100:
+      return 'не для гостей';
+    default: //решил что максимум гостей будет 10)
+      return getRandomInt(1, 10);
+  }
+}
+
 getRandomInt(2, 3);
 getRandomFloat(0.5, 4.3, 2);
 
@@ -63,33 +83,16 @@ function createRentOffer() {
   const randomTitleIndex = getRandomInt(0, TITLE.length - 1);
   const randomTypeIndex = getRandomInt(0, TYPE.length - 1);
   const randomDescripIndex = getRandomInt(0, DESCRIPTION.length - 1);
-  const randomFeatures = shuffleArray(FEATURES).slice(0, getRandomInt(1, FEATURES.length - 1));
-  const randomPhotos = shuffleArray(PHOTOS).slice(0, getRandomInt(1, PHOTOS.length - 1));
-  const randomRoom = getRandomInt(1, 100);
-  function getRandomGuest(room) {
-    switch (room) {
-      case 1:
-        return 1;
-      case 2:
-        return getRandomInt(1, 2);
-      case 3:
-        return getRandomInt(1, 3);
-      case 100:
-        return 'не для гостей';
-      default: //решил что максимум гостей будет 10)
-        return getRandomInt(1, 10);
-    }
-  }
-  function randomAvatar(randomInt) {
-    randomInt = getRandomInt(1, 10);
-    return randomInt === 10 ? 'img/avatars/user10.png' : `img/avatars/user0${  randomInt  }.png`;
-  }
-  const randomLat = getRandomFloat(35.65, 35.70, 5);
-  const randomLng = getRandomFloat(139.7, 139.8, 5);
+  const features = shuffleArray(FEATURES).slice(0, getRandomInt(1, FEATURES.length - 1));
+  const photos = shuffleArray(PHOTOS).slice(0, getRandomInt(1, PHOTOS.length - 1));
+  const rooms = getRandomInt(1, 100);
+  const lat = getRandomFloat(35.65, 35.70, 5);
+  const lng = getRandomFloat(139.7, 139.8, 5);
   function getMinPrice(type) {
     switch (type) {
       case 'bungalow':
         return 0;
+
       case 'flat':
         return 1000;
       case 'hotel':
@@ -106,22 +109,22 @@ function createRentOffer() {
     },
     offer: {
       title: TITLE[randomTitleIndex],
-      address: `${randomLat}, ${randomLng}`,
+      address: `${lat}, ${lng}`,
       price: getRandomInt(getMinPrice(TYPE[randomTypeIndex]), 100000),
       type: TYPE[randomTypeIndex],
-      rooms: randomRoom,
-      guest: getRandomGuest(randomRoom),
+      rooms,
+      guest: getRandomGuest(rooms),
       checkIn: CHECK_TIME[randomCheckTimeIndex],
       checkOut: CHECK_TIME[randomCheckTimeIndex],
-      features: randomFeatures,
+      features,
       description: DESCRIPTION[randomDescripIndex],
-      photos: randomPhotos
+      photos
     },
     location: {
-      lat: randomLat,
-      lng: randomLng
+      lat,
+      lng
     }
   };
 }
 
-createRentOffer();
+console.log(createRentOffer());
