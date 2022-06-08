@@ -34,9 +34,7 @@ function getRandomGuest(room) {
   }
 }
 
-getRandomArrayElement = (array) => {
-  return array[getRandomInt(0, array.length - 1)];
-}
+const getRandomArrayElement = (array) => array[getRandomInt(0, array.length - 1)];
 
 getRandomInt(2, 3);
 getRandomFloat(0.5, 4.3, 2);
@@ -92,6 +90,7 @@ const minPrice = {
 function createRentOffer() {
   const features = shuffleArray(FEATURES).slice(0, getRandomInt(1, FEATURES.length - 1));
   const photos = shuffleArray(PHOTOS).slice(0, getRandomInt(1, PHOTOS.length - 1));
+  const checkTime = getRandomArrayElement(CHECK_TIME);
   const rooms = getRandomInt(1, 100);
   const lat = getRandomFloat(35.65, 35.70, 5);
   const lng = getRandomFloat(139.7, 139.8, 5);
@@ -107,8 +106,8 @@ function createRentOffer() {
       type: getRandomArrayElement(TYPE),
       rooms,
       guest: getRandomGuest(rooms),
-      checkIn: getRandomArrayElement(CHECK_TIME),
-      checkOut: getRandomArrayElement(CHECK_TIME),
+      checkIn: checkTime,
+      checkOut: checkTime,
       features,
       description: getRandomArrayElement(DESCRIPTION),
       photos
@@ -120,4 +119,4 @@ function createRentOffer() {
   };
 }
 
-console.log(createRentOffer());
+createRentOffer();
