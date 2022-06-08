@@ -8,7 +8,7 @@ function getRandomFloat(firstNum, secondNum, afterCommaNum) {
 
 function shuffleArray(array) { //"Тасование Фишера - Йетса (стырил)"
   for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i +1));
+    const j = Math.floor(Math.random() * (i +1));
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
@@ -85,10 +85,10 @@ function createRentOffer() {
         break;
     }
   }
-  const randomAvatar = () => {
-    const randomInt = getRandomInt(1, 10);
+  function randomAvatar(randomInt) {
+    randomInt = getRandomInt(1, 10);
     return randomInt === 10 ? 'img/avatars/user10.png' : `img/avatars/user0${  randomInt  }.png`;
-  };
+  }
   const randomLat = getRandomFloat(35.65, 35.70, 5);
   const randomLng = getRandomFloat(139.7, 139.8, 5);
   function getMinPrice(type) {
@@ -139,6 +139,6 @@ function createRentOffer() {
     offer: offer,
     location: location
   };
-};
+}
 
 console.log(createRentOffer());
