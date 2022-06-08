@@ -70,19 +70,14 @@ function createRentOffer() {
     switch (room) {
       case 1:
         return 1;
-        break;
       case 2:
         return getRandomInt(1, 2);
-        break;
       case 3:
         return getRandomInt(1, 3);
-        break;
       case 100:
         return 'не для гостей';
-        break;
       default: //решил что максимум гостей будет 10)
         return getRandomInt(1, 10);
-        break;
     }
   }
   function randomAvatar(randomInt) {
@@ -95,19 +90,14 @@ function createRentOffer() {
     switch (type) {
       case 'bungalow':
         return 0;
-        break;
       case 'flat':
         return 1000;
-        break;
       case 'hotel':
         return 3000;
-        break;
       case 'house':
         return 5000;
-        break;
       case 'palace':
         return 10000;
-        break;
     }
   }
   const author = {
@@ -141,4 +131,4 @@ function createRentOffer() {
   };
 }
 
-console.log(createRentOffer());
+createRentOffer();
