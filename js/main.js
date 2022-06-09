@@ -34,7 +34,10 @@ function getRandomGuest(room) {
   }
 }
 
-const getRandomArrayElement = (array) => array[getRandomInt(0, array.length - 1)];
+function getRandomArrayElement (array) {
+  return array[getRandomInt(0, array.length - 1)];
+}
+
 
 getRandomInt(2, 3);
 getRandomFloat(0.5, 4.3, 2);
