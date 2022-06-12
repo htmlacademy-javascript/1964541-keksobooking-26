@@ -40,7 +40,7 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
 ];
 
-const minPrice = {
+const MinPrice = {
   bungalow: 0,
   flat: 1000,
   hotel: 3000,
@@ -48,13 +48,25 @@ const minPrice = {
   palace: 10000
 };
 
+const MIN_LAT = 35.65;
+const MAX_LAT = 35.70;
+const MIN_LNG = 139.7;
+const MAX_LNG = 139.8;
+const MIN_ROOMS = 1;
+const MAX_ROOMS = 100;
+const MAX_PRICE = 100000;
+const REQUIRED_OFFER_AMOUNT = 10;
+const MIN_FEATURES = 1;
+const MIN_PHOTOS = 1;
+
 function createRentOffer() {
-  const features = shuffleArray(FEATURES).slice(0, getRandomInt(1, FEATURES.length - 1));
-  const photos = shuffleArray(PHOTOS).slice(0, getRandomInt(1, PHOTOS.length - 1));
+  const features = shuffleArray(FEATURES).slice(0, getRandomInt(MIN_FEATURES, FEATURES.length - 1));
+  const photos = shuffleArray(PHOTOS).slice(0, getRandomInt(MIN_PHOTOS, PHOTOS.length - 1));
   const checkTime = getRandomArrayElement(CHECK_TIME);
-  const rooms = getRandomInt(1, 100);
-  const lat = getRandomFloat(35.65, 35.70, 5);
-  const lng = getRandomFloat(139.7, 139.8, 5);
+  const rooms = getRandomInt(MIN_ROOMS, MAX_ROOMS);
+  const lat = getRandomFloat(MIN_LAT, MAX_LAT, 5);
+  const lng = getRandomFloat(MIN_LNG, MAX_LNG, 5);
+  const address = `${lat}, ${lng}`;
 
   return {
     author: {
@@ -62,8 +74,8 @@ function createRentOffer() {
     },
     offer: {
       title: getRandomArrayElement(TITLE),
-      address: `${lat}, ${lng}`,
-      price: getRandomInt(minPrice[getRandomArrayElement(TYPE)], 100000),
+      address,
+      price: getRandomInt(MinPrice[getRandomArrayElement(TYPE)], MAX_PRICE),
       type: getRandomArrayElement(TYPE),
       rooms,
       guest: getRandomGuest(rooms),
@@ -81,7 +93,7 @@ function createRentOffer() {
 }
 
 function crateAvailableOffers() {
-  return Array.from({length: 10}, createRentOffer);
+  return Array.from({length: REQUIRED_OFFER_AMOUNT}, createRentOffer);
 }
 
 export {crateAvailableOffers};
