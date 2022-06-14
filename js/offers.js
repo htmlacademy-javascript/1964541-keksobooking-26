@@ -34,5 +34,7 @@ generatedOffers.forEach((generatedOffer) => {
       featuresListItem.remove();
     }
   });
-  map.append(offerElement);
+  offersListFragment.append(offerElement);
 });
+
+map.append(offersListFragment);
