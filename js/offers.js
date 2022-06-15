@@ -36,5 +36,3 @@ generatedOffers.forEach((generatedOffer) => {
   });
   offersListFragment.append(offerElement);
 });
-
-map.append(offersListFragment);
