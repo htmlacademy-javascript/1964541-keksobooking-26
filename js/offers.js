@@ -1,4 +1,5 @@
 import {crateAvailableOffers} from './data.js';
+import {createOfferImg} from './helpers.js';
 
 const generatedOffers = crateAvailableOffers();
 const offersTemplate = document.querySelector('#card').content.querySelector('.popup');
@@ -22,10 +23,9 @@ generatedOffers.forEach((generatedOffer) => {
   offerElement.querySelector('.popup__text--time').textContent = `Заезд после ${generatedOffer.offer.checkIn}, выезд до ${generatedOffer.offer.checkOut}`;
   offerElement.querySelector('.popup__description').textContent = generatedOffer.offer.description;
   offerElement.querySelector('.popup__type').textContent = RusType[generatedOffer.offer.type];
-  const offerPhotoContainer = offerElement.querySelector('.popup__photos');
-  offerElement.querySelector('.popup__photo').remove();
-  generatedOffer.offer.photos.forEach((photo) => {
-    offerPhotoContainer.insertAdjacentHTML('afterbegin', `<img src="${photo}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`);
+  const photoContainer = offerElement.querySelector('.popup__photos');
+  generatedOffer.offer.photos.forEach((photo, index) => {
+    photoContainer.append(createOfferImg(photo, index, generatedOffer.offer.address));
   });
   const featuresList = offerElement.querySelectorAll('.popup__feature');
   featuresList.forEach((featuresListItem) => {
