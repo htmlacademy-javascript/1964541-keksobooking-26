@@ -14,12 +14,15 @@ const offersTemplate = document.querySelector('#card').content.querySelector('.p
 const map = document.querySelector('#map-canvas');
 const offersListFragment = document.createDocumentFragment();
 
-function insertData (offerTemplateElement, offerData) {
-  // eslint-disable-next-line no-unused-expressions
-  offerData ? offerTemplateElement.textContent = offerData : offerTemplateElement.classList.add('hidden');
+function insertData(offerTemplateElement, offerData) {
+  if (offerData) {
+    offerTemplateElement.textContent = offerData;
+  } else {
+    offerTemplateElement.classList.add('hidden');
+  }
 }
 
-function createPopup (template, generatedOffer) {
+function createPopup(template, generatedOffer) {
 
   const offerElement = offersTemplate.cloneNode(true);
 
@@ -32,18 +35,26 @@ function createPopup (template, generatedOffer) {
   insertData(offerElement.querySelector('.popup__description'), generatedOffer.offer.description);
   insertData(offerElement.querySelector('.popup__type'), RusType[generatedOffer.offer.type]);
 
-  const photoContainer = offerElement.querySelector('.popup__photos');
-  generatedOffer.offer.photos.forEach((photo, index) => {
-    photoContainer.append(createOfferImg(photo, index, generatedOffer.offer.address));
-  });
+  if (generatedOffer.offer.photos) {
+    const photoContainer = offerElement.querySelector('.popup__photos');
+    generatedOffer.offer.photos.forEach((photo, index) => {
+      photoContainer.append(createOfferImg(photo, index, generatedOffer.offer.address));
+    });
+  }
 
   const featuresList = offerElement.querySelectorAll('.popup__feature');
-  featuresList.forEach((featuresListItem) => {
-    const isNecessary = generatedOffer.offer.features.some((feature) => featuresListItem.classList.contains(`popup__feature--${feature}`));
-    if (!isNecessary) {
+  if (generatedOffer.offer.features) {
+    featuresList.forEach((featuresListItem) => {
+      const isNecessary = generatedOffer.offer.features.some((feature) => featuresListItem.classList.contains(`popup__feature--${feature}`));
+      if (!isNecessary) {
+        featuresListItem.remove();
+      }
+    });
+  } else {
+    featuresList.forEach((featuresListItem) => {
       featuresListItem.remove();
-    }
-  });
+    });
+  }
 
   return offerElement;
 }
