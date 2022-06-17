@@ -11,7 +11,6 @@ const RusType = {
 
 const generatedOffers = crateAvailableOffers();
 const offersTemplate = document.querySelector('#card').content.querySelector('.popup');
-const map = document.querySelector('#map-canvas');
 const offersListFragment = document.createDocumentFragment();
 
 function insertData(offerTemplateElement, offerData) {
