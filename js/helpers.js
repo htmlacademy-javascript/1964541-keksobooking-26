@@ -38,4 +38,14 @@ function getRandomArrayElement (array) {
   return array[getRandomInt(0, array.length - 1)];
 }
 
-export {shuffleArray, getRandomArrayElement, getRandomInt, getRandomFloat, randomAvatar, getRandomGuest};
+function createOfferImg (src, cord, index) {
+  const element = document.createElement('img');
+  element.classList.add('.popup__photo');
+  element.src = src;
+  element.alt = `Фото ${index} объявления ${cord}`;
+  element.style.width = '45px';
+  element.style.height = '40px';
+  return element;
+}
+
+export {shuffleArray, getRandomArrayElement, getRandomInt, getRandomFloat, randomAvatar, getRandomGuest, createOfferImg};
