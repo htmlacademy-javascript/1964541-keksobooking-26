@@ -29,11 +29,5 @@ pristine.addValidator(roomsField, validateGuests, roomGuestsInvalidMessage);
 
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
-
-  const isValid = pristine.validate();
-  if (isValid) {
-    console.log('Forma VALIDNA');
-  } else {
-    console.log('Forma NE validna');
-  }
+  pristine.validate();
 });
