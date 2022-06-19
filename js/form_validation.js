@@ -9,9 +9,9 @@ const GuestRoomsOptions = {
 
 const pristine = new Pristine(form, {
   classTo: 'ad-form__element',
-  errorClass: 'ad-form__element--invalid',
+  errorClass: 'validation__error',
   errorTextParent: 'ad-form__element'
-});
+}, false);
 
 const guestsField = form.querySelector('[name="capacity"]');
 const roomsField = form.querySelector('[name="rooms"]');
