@@ -55,12 +55,13 @@ pristine.addValidator(guestsField, validateGuests, roomGuestsInvalidMessage);
 pristine.addValidator(roomsField, validateGuests, roomGuestsInvalidMessage);
 pristine.addValidator(priceField, validatePrice, priceInvalidMessage);
 
-roomsField.addEventListener('change', () => {
-  pristine.validate(guestsField);
-});
-
-guestsField.addEventListener('change', () => {
-  pristine.validate(roomsField);
+form.addEventListener('change', (evt) => {
+  if (evt.target.matches('[name="rooms"]')) {
+    pristine.validate(guestsField);
+  }
+  if (evt.target.matches('[name="capacity"]')) {
+    pristine.validate(roomsField);
+  }
 });
 
 form.addEventListener('submit', (evt) => {
