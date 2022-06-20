@@ -62,6 +62,9 @@ form.addEventListener('change', (evt) => {
   if (evt.target.matches('[name="capacity"]')) {
     pristine.validate(roomsField);
   }
+  if (evt.target.matches('[name="type"]')) {
+    pristine.validate(priceField);
+  }
 });
 
 form.addEventListener('submit', (evt) => {
