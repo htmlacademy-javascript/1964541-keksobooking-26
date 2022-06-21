@@ -96,4 +96,4 @@ function crateAvailableOffers() {
   return Array.from({length: REQUIRED_OFFER_AMOUNT}, createRentOffer);
 }
 
-export {crateAvailableOffers};
+export {crateAvailableOffers, MinPrice};
