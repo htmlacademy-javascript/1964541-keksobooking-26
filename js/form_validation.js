@@ -34,6 +34,8 @@ const guestsField = form.querySelector('[name="capacity"]');
 const roomsField = form.querySelector('[name="rooms"]');
 const priceField = form.querySelector('[name="price"]');
 const typeName = form.querySelector('[name="type"]');
+const checkIn = form.querySelector('#timein');
+const checkOut = form.querySelector('#timeout');
 
 function validatePrice(value) {
   return MinPrice[typeName.value] <= value && value <= MAX_PRICE;
@@ -62,7 +64,14 @@ form.addEventListener('change', (evt) => {
   if (evt.target.matches('[name="capacity"]')) {
     pristine.validate(roomsField);
   }
+  if (evt.target.matches('[name="timein"]')) {
+    checkOut.value = checkIn.value;
+  }
+  if (evt.target.matches('[name="timeout"]')) {
+    checkIn.value = checkOut.value;
+  }
   if (evt.target.matches('[name="type"]')) {
+    priceField.placeholder = MinPrice[typeName.value];
     pristine.validate(priceField);
   }
 });
@@ -72,15 +81,5 @@ form.addEventListener('submit', (evt) => {
   pristine.validate();
 });
 
-const checkIn = form.querySelector('#timein');
-const checkOut = form.querySelector('#timeout');
-
-checkIn.addEventListener('change', () => {
-  checkOut.value = checkIn.value;
-});
-
-typeName.addEventListener('change', () => {
-  priceField.placeholder = MinPrice[typeName.value];
-});
 
 
