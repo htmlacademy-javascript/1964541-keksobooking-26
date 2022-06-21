@@ -74,9 +74,14 @@ form.addEventListener('change', (evt) => {
     priceField.placeholder = MinPrice[typeName.value];
     pristine.validate(priceField);
   }
+  if (evt.target.matches('[name="slider"]')) {
+    pristine.validate(priceField);
+  }
 });
 
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
   pristine.validate();
 });
+
+export {MAX_PRICE};
