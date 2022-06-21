@@ -7,10 +7,10 @@ const priceField = document.querySelector('[name="price"]');
 
 noUiSlider.create(sliderElement, {
   range: {
-    min: 1000,
+    min: 0,
     max: MAX_PRICE,
   },
-  start: 80,
+  start: 0,
   step: 10,
   connect: 'lower',
   format: {
