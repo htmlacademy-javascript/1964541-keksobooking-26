@@ -1,6 +1,7 @@
 function deactivatePage () {
   document.querySelector('.ad-form').classList.add('ad-form--disabled');
   document.querySelector('.map__filters').classList.add('map__filters--disabled');
+  document.querySelector('.map__canvas').classList.add('map__canvas--disabled');
   const formTags = document.querySelectorAll('.ad-form');
   const mapTags = document.querySelectorAll('.map__filters');
   formTags.forEach((formTag) => {

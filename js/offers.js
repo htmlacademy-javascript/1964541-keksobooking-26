@@ -62,3 +62,5 @@ generatedOffers.forEach((generatedOffer) => {
   const popup = createPopup(offersTemplate, generatedOffer);
   offersListFragment.append(popup);
 });
+
+export {createPopup, generatedOffers, offersTemplate};
