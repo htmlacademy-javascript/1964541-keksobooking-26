@@ -51,15 +51,21 @@ mainMarker.on('moveend', (evt) => {
   addressContainer.value = lil.replace(/LatLng/, '');
 });
 
-generatedOffers.forEach((generatedOffer) => {
+const allMarkersGroup = L.layerGroup().addTo(map);
+
+const createMarker = (offer) => {
   const offersMarker = L.marker(
     {
-      lat: generatedOffer.location.lat,
-      lng: generatedOffer.location.lng,
+      lat: offer.location.lat,
+      lng: offer.location.lng,
     },
     {
       icon: offersPinIcon
     });
 
-  offersMarker.addTo(map).bindPopup(createPopup(offersTemplate, generatedOffer));
+  offersMarker.addTo(allMarkersGroup).bindPopup(createPopup(offersTemplate, offer));
+};
+
+generatedOffers.forEach((generatedOffer) => {
+  createMarker(generatedOffer);
 });
