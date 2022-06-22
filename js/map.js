@@ -3,13 +3,17 @@ import {createPopup, generatedOffers, offersTemplate} from './offers.js';
 
 deactivatePage();
 
-const map = L.map('map-canvas').setView({
+const MAP_ZOOM = 9;
+const MAP_PICTURE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const DEFAULT_LOCATION = {
   lat: 35.74375,
   lng: 139.77755
-}, 10);
+};
+
+const map = L.map('map-canvas').setView(DEFAULT_LOCATION, MAP_ZOOM);
 
 L.tileLayer(
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  MAP_PICTURE_URL,
   {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   },).addTo(map);
@@ -29,14 +33,11 @@ const mainPinIcon = L.icon({
 const offersPinIcon = L.icon({
   iconUrl: 'img/pin.svg',
   iconSize: [42, 42],
-  iconAnchor: [16, 52],
+  iconAnchor: [21, 52],
 });
 
 const mainMarker = L.marker(
-  {
-    lat: 35.74375,
-    lng: 139.77755
-  },
+  DEFAULT_LOCATION,
   {
     draggable: true,
     icon: mainPinIcon
@@ -46,9 +47,8 @@ const mainMarker = L.marker(
 mainMarker.addTo(map);
 
 mainMarker.on('moveend', (evt) => {
-  let lil = evt.target.getLatLng();
-  lil += '';
-  addressContainer.value = lil.replace(/LatLng/, '');
+  const { lat, lng } = evt.target.getLatLng();
+  addressContainer.value = `${lat.toFixed(5)  },${  lng.toFixed(5)}` ;
 });
 
 const allMarkersGroup = L.layerGroup().addTo(map);
