@@ -4,8 +4,8 @@ import {createPopup, generatedOffers, offersTemplate} from './offers.js';
 deactivatePage();
 
 const map = L.map('map-canvas').setView({
-  lat: 35.4200,
-  lng: 139.2530
+  lat: 35.74375,
+  lng: 139.77755
 }, 10);
 
 L.tileLayer(
@@ -34,8 +34,8 @@ const offersPinIcon = L.icon({
 
 const mainMarker = L.marker(
   {
-    lat: 35.4200,
-    lng: 139.2530
+    lat: 35.74375,
+    lng: 139.77755
   },
   {
     draggable: true,
