@@ -13,9 +13,11 @@ const generatedOffers = crateAvailableOffers();
 const offersTemplate = document.querySelector('#card').content.querySelector('.popup');
 const offersListFragment = document.createDocumentFragment();
 
-function insertData(offerTemplateElement, offerData) {
-  if (offerData) {
+function insertData(offerTemplateElement, offerData, param) {
+  if (offerData && param === 'text') {
     offerTemplateElement.textContent = offerData;
+  } else if (offerData && param === 'src') {
+    offerTemplateElement.src = offerData;
   } else {
     offerTemplateElement.classList.add('hidden');
   }
@@ -25,14 +27,14 @@ function createPopup(template, generatedOffer) {
 
   const offerElement = offersTemplate.cloneNode(true);
 
-  insertData(offerElement.querySelector('.popup__text--price'), `${generatedOffer.offer.price}₽/ночь`);
-  insertData(offerElement.querySelector('.popup__avatar'), generatedOffer.author.avatar);
-  insertData(offerElement.querySelector('.popup__title'), generatedOffer.offer.title);
-  insertData(offerElement.querySelector('.popup__text--address'), generatedOffer.offer.address);
-  insertData(offerElement.querySelector('.popup__text--capacity'), `${generatedOffer.offer.rooms} комнаты для ${generatedOffer.offer.guest} гостей`);
-  insertData(offerElement.querySelector('.popup__text--time'), `Заезд после ${generatedOffer.offer.checkIn}, выезд до ${generatedOffer.offer.checkOut}`);
-  insertData(offerElement.querySelector('.popup__description'), generatedOffer.offer.description);
-  insertData(offerElement.querySelector('.popup__type'), RusType[generatedOffer.offer.type]);
+  insertData(offerElement.querySelector('.popup__text--price'), `${generatedOffer.offer.price}₽/ночь`, 'text');
+  insertData(offerElement.querySelector('.popup__avatar'), generatedOffer.author.avatar, 'src');
+  insertData(offerElement.querySelector('.popup__title'), generatedOffer.offer.title, 'text');
+  insertData(offerElement.querySelector('.popup__text--address'), generatedOffer.offer.address, 'text');
+  insertData(offerElement.querySelector('.popup__text--capacity'), `${generatedOffer.offer.rooms} комнаты для ${generatedOffer.offer.guest} гостей`, 'text');
+  insertData(offerElement.querySelector('.popup__text--time'), `Заезд после ${generatedOffer.offer.checkIn}, выезд до ${generatedOffer.offer.checkOut}`, 'text');
+  insertData(offerElement.querySelector('.popup__description'), generatedOffer.offer.description, 'text');
+  insertData(offerElement.querySelector('.popup__type'), RusType[generatedOffer.offer.type], 'text');
 
   if (generatedOffer.offer.photos) {
     const photoContainer = offerElement.querySelector('.popup__photos');
@@ -62,3 +64,5 @@ generatedOffers.forEach((generatedOffer) => {
   const popup = createPopup(offersTemplate, generatedOffer);
   offersListFragment.append(popup);
 });
+
+export {createPopup, generatedOffers, offersTemplate};
