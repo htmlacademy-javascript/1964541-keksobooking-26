@@ -1,4 +1,5 @@
 import {shuffleArray, getRandomArrayElement, getRandomInt, getRandomFloat, randomAvatar, getRandomGuest} from './helpers.js';
+import {AFTER_COMMA_NUM} from './consts.js';
 
 const CHECK_TIME = [
   '12:00',
@@ -64,8 +65,8 @@ function createRentOffer() {
   const photos = shuffleArray(PHOTOS).slice(0, getRandomInt(MIN_PHOTOS, PHOTOS.length - 1));
   const checkTime = getRandomArrayElement(CHECK_TIME);
   const rooms = getRandomInt(MIN_ROOMS, MAX_ROOMS);
-  const lat = getRandomFloat(MIN_LAT, MAX_LAT, 5);
-  const lng = getRandomFloat(MIN_LNG, MAX_LNG, 5);
+  const lat = getRandomFloat(MIN_LAT, MAX_LAT, AFTER_COMMA_NUM);
+  const lng = getRandomFloat(MIN_LNG, MAX_LNG, AFTER_COMMA_NUM);
   const address = `${lat}, ${lng}`;
 
   return {

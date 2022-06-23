@@ -1,0 +1,2 @@
+const AFTER_COMMA_NUM = 5;
+export {AFTER_COMMA_NUM}
