@@ -1,4 +1,3 @@
-import {crateAvailableOffers} from './data.js';
 import {createOfferImg} from './helpers.js';
 
 const RusType = {

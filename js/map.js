@@ -2,6 +2,7 @@ import {activatePage, deactivatePage} from './form.js';
 import {createPopup} from './offers.js';
 import {AFTER_COMMA_NUM} from './consts.js';
 import {getOffersFromServer} from './serverConnectionAPI.js';
+import {showAlert} from './helpers.js';
 
 deactivatePage();
 
@@ -70,5 +71,5 @@ const createMarkers = (offers) => {
   });
 };
 
-getOffersFromServer(createMarkers);
+getOffersFromServer(createMarkers, showAlert);
 

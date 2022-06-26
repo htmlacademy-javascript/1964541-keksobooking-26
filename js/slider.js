@@ -1,4 +1,4 @@
-import {MinPrice} from './data.js';
+import {MIN_PRICE} from './consts.js';
 import {MAX_PRICE} from './form_validation.js';
 
 const SLIDER_MIN_RANGE = 0;
@@ -35,7 +35,7 @@ sliderElement.noUiSlider.on('update', () => {
 typeName.addEventListener('change', () => {
   sliderElement.noUiSlider.updateOptions({
     range: {
-      min: MinPrice[typeName.value],
+      min: MIN_PRICE[typeName.value],
       max: MAX_PRICE
     }
   });

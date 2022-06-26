@@ -1,4 +1,4 @@
-import {MinPrice} from './data.js';
+import {MIN_PRICE} from './consts.js';
 
 const GuestRoomsOptions = {
   '1': ['1'],
@@ -38,7 +38,7 @@ const checkIn = form.querySelector('#timein');
 const checkOut = form.querySelector('#timeout');
 
 function validatePrice(value) {
-  return MinPrice[typeName.value] <= value && value <= MAX_PRICE;
+  return MIN_PRICE[typeName.value] <= value && value <= MAX_PRICE;
 }
 
 function validateGuests() {
@@ -50,7 +50,7 @@ function roomGuestsInvalidMessage () {
 }
 
 function priceInvalidMessage () {
-  return `Должно быть от ${MinPrice[typeName.value]} до ${MAX_PRICE}`;
+  return `Должно быть от ${MIN_PRICE[typeName.value]} до ${MAX_PRICE}`;
 }
 
 pristine.addValidator(guestsField, validateGuests, roomGuestsInvalidMessage);
@@ -71,7 +71,7 @@ form.addEventListener('change', (evt) => {
     checkIn.value = checkOut.value;
   }
   if (evt.target.matches('[name="type"]')) {
-    priceField.placeholder = MinPrice[typeName.value];
+    priceField.placeholder = MIN_PRICE[typeName.value];
     pristine.validate(priceField);
   }
   if (evt.target.matches('[name="slider"]')) {
