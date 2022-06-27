@@ -1,4 +1,6 @@
 import {MIN_PRICE} from './consts.js';
+import {sendOfferToServer} from './serverConnectionAPI.js';
+import {showAlert} from './helpers.js';
 
 const GuestRoomsOptions = {
   '1': ['1'],
@@ -36,6 +38,7 @@ const priceField = form.querySelector('[name="price"]');
 const typeName = form.querySelector('[name="type"]');
 const checkIn = form.querySelector('#timein');
 const checkOut = form.querySelector('#timeout');
+const submitButton = form.querySelector('.ad-form__submit');
 
 function validatePrice(value) {
   return MIN_PRICE[typeName.value] <= value && value <= MAX_PRICE;
@@ -52,6 +55,16 @@ function roomGuestsInvalidMessage () {
 function priceInvalidMessage () {
   return `Должно быть от ${MIN_PRICE[typeName.value]} до ${MAX_PRICE}`;
 }
+
+function blockSubmitButton() {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Публикую...';
+}
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
 
 pristine.addValidator(guestsField, validateGuests, roomGuestsInvalidMessage);
 pristine.addValidator(roomsField, validateGuests, roomGuestsInvalidMessage);
@@ -81,7 +94,21 @@ form.addEventListener('change', (evt) => {
 
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  pristine.validate();
+  const isValid = pristine.validate();
+
+  if (isValid) {
+    blockSubmitButton();
+    sendOfferToServer(
+      () => {
+        unblockSubmitButton();
+      },
+      () => {
+        showAlert('Не удалось отправить форму. Попробуйте ещё раз');
+        unblockSubmitButton();
+      },
+      new FormData(evt.target),
+    );
+  }
 });
 
 export {MAX_PRICE};

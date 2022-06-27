@@ -48,7 +48,7 @@ function createOfferImg (src, cord, index) {
   return element;
 }
 
-const ALERT_SHOW_TIME = 5;
+const ALERT_SHOW_TIME = 500;
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
@@ -69,6 +69,6 @@ const showAlert = (message) => {
   setTimeout(() => {
     alertContainer.remove();
   }, ALERT_SHOW_TIME);
-}
+};
 
 export {shuffleArray, getRandomArrayElement, getRandomInt, getRandomFloat, randomAvatar, getRandomGuest, createOfferImg, showAlert};
