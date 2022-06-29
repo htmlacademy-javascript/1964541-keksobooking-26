@@ -31,6 +31,22 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
+const submitButton = document.querySelector('.ad-form__submit');
+
+function blockSubmitButton() {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Публикую...';
+}
+
+function unblockSubmitButton() {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+}
+
+const isEscapeKey = (evt) => {
+  return evt.key === 'Escape';
+};
+
 function insertData(offerTemplateElement, offerData, param) {
   if (offerData && param === 'text') {
     offerTemplateElement.textContent = offerData;
@@ -49,9 +65,18 @@ const sendOfferError = (message) => {
   insertData(errorElement.querySelector('.error__message'), message, 'text');
   document.querySelector('body').append(errorContainer);
 
+  document.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      errorContainer.remove();
+      unblockSubmitButton();
+    }
+  });
+
   exitButton.addEventListener('click', () => {
     errorContainer.remove();
+    unblockSubmitButton();
   });
 };
 
-export {createOfferImg, showAlert, sendOfferError, insertData};
+
+export {createOfferImg, showAlert, sendOfferError, insertData, unblockSubmitButton, blockSubmitButton};
