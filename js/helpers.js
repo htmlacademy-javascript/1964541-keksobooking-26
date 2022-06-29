@@ -43,9 +43,9 @@ function unblockSubmitButton() {
   submitButton.textContent = 'Опубликовать';
 }
 
-const isEscapeKey = (evt) => {
+function isEscapeKey(evt) {
   return evt.key === 'Escape';
-};
+}
 
 function insertData(offerTemplateElement, offerData, param) {
   if (offerData && param === 'text') {

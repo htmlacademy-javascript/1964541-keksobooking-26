@@ -9,4 +9,4 @@ const MIN_PRICE = {
   palace: 10000
 };
 
-export {MIN_PRICE}
+export {MIN_PRICE};
