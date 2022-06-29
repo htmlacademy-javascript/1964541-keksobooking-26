@@ -1,6 +1,6 @@
 import {MIN_PRICE} from './consts.js';
 import {sendOfferToServer} from './serverConnectionAPI.js';
-import {showAlert} from './helpers.js';
+import {sendOfferError} from './helpers.js';
 
 const GuestRoomsOptions = {
   '1': ['1'],
@@ -102,10 +102,7 @@ form.addEventListener('submit', (evt) => {
       () => {
         unblockSubmitButton();
       },
-      () => {
-        showAlert('Не удалось отправить форму. Попробуйте ещё раз');
-        unblockSubmitButton();
-      },
+      sendOfferError,
       new FormData(evt.target),
     );
   }

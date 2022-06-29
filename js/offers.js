@@ -1,4 +1,4 @@
-import {createOfferImg} from './helpers.js';
+import {createOfferImg, insertData} from './helpers.js';
 
 const RusType = {
   bungalow: 'Бунгало',
@@ -8,16 +8,6 @@ const RusType = {
   palace: 'Дворец'
 };
 
-function insertData(offerTemplateElement, offerData, param) {
-  if (offerData && param === 'text') {
-    offerTemplateElement.textContent = offerData;
-  } else if (offerData && param === 'src') {
-    offerTemplateElement.src = offerData;
-  } else {
-    offerTemplateElement.classList.add('hidden');
-  }
-}
-
 function createPopup(offerFromServer) {
   const offersTemplate = document.querySelector('#card').content.querySelector('.popup');
   const offerElement = offersTemplate.cloneNode(true);
@@ -26,8 +16,8 @@ function createPopup(offerFromServer) {
   insertData(offerElement.querySelector('.popup__avatar'), offerFromServer.author.avatar, 'src');
   insertData(offerElement.querySelector('.popup__title'), offerFromServer.offer.title, 'text');
   insertData(offerElement.querySelector('.popup__text--address'), offerFromServer.offer.address, 'text');
-  insertData(offerElement.querySelector('.popup__text--capacity'), `${offerFromServer.offer.rooms} комнаты для ${offerFromServer.offer.guest} гостей`, 'text');
-  insertData(offerElement.querySelector('.popup__text--time'), `Заезд после ${offerFromServer.offer.checkIn}, выезд до ${offerFromServer.offer.checkOut}`, 'text');
+  insertData(offerElement.querySelector('.popup__text--capacity'), `${offerFromServer.offer.rooms} комнаты для ${offerFromServer.offer.guests} гостей`, 'text');
+  insertData(offerElement.querySelector('.popup__text--time'), `Заезд после ${offerFromServer.offer.checkin}, выезд до ${offerFromServer.offer.checkout}`, 'text');
   insertData(offerElement.querySelector('.popup__description'), offerFromServer.offer.description, 'text');
   insertData(offerElement.querySelector('.popup__type'), RusType[offerFromServer.offer.type], 'text');
 
