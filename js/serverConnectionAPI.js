@@ -3,12 +3,8 @@ function getOffersFromServer(onSuccess, onFail) {
     .then((response) => response.json())
     .then((serverOffers) => {
       onSuccess(serverOffers);
-    }).then((response) => {
-      if (response.ok) {
-        onSuccess();
-      }
-      onFail('Не удалось отправить форму, попробуйте еще раз');
-    }).catch(() => {
+    })
+    .catch(() => {
       onFail('Не удалось отправить форму');
     });
 }
