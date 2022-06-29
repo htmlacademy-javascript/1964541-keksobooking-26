@@ -12,13 +12,14 @@ function getOffersFromServer(onSuccess, onFail) {
 function sendOfferToServer(onSuccess, onFail, data) {
   fetch('https://26.javascript.pages.academy/keksobooking', {
     method: 'POST',
-    data
+    body: data
   })
     .then((response) => {
       if (response.ok) {
         onSuccess();
+      } else {
+        onFail('Не удалось отправить форму, попробуйте еще раз');
       }
-      onFail('Не удалось отправить форму, попробуйте еще раз');
     }).catch(() => {
       onFail('Не удалось отправить форму');
     });
