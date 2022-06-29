@@ -1,6 +1,6 @@
 import {MIN_PRICE} from './consts.js';
 import {sendOfferToServer} from './serverConnectionAPI.js';
-import {blockSubmitButton, sendOfferError, unblockSubmitButton} from './helpers.js';
+import {blockSubmitButton, sendOfferError, sendOfferSuccess} from './helpers.js';
 
 const GuestRoomsOptions = {
   '1': ['1'],
@@ -87,13 +87,7 @@ form.addEventListener('submit', (evt) => {
 
   if (isValid) {
     blockSubmitButton();
-    sendOfferToServer(
-      () => {
-        unblockSubmitButton(); //Уберу потом эту функцию в функцию удачной отправки объявления, но пока тут
-      },
-      sendOfferError,
-      new FormData(evt.target),
-    );
+    sendOfferToServer(sendOfferSuccess, sendOfferError, new FormData(evt.target));
   }
 });
 

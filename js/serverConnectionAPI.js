@@ -16,7 +16,7 @@ function sendOfferToServer(onSuccess, onFail, data) {
   })
     .then((response) => {
       if (response.ok) {
-        onSuccess();
+        onSuccess('Объявление добавлено');
       } else {
         onFail('Не удалось отправить форму, попробуйте еще раз');
       }

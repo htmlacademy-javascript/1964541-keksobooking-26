@@ -57,11 +57,33 @@ function insertData(offerTemplateElement, offerData, param) {
   }
 }
 
+function sendOfferSuccess(message) {
+  const successTemplate = document.querySelector('#success').content;
+  const successElement = successTemplate.cloneNode(true);
+  const successContainer = successElement.querySelector('.success');
+
+  insertData(successElement.querySelector('.success__message'), message, 'text');
+  document.querySelector('body').append(successContainer);
+
+  document.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      successContainer.remove();
+      unblockSubmitButton();
+    }
+  });
+
+  successContainer.addEventListener('click', () => {
+    successContainer.remove();
+    unblockSubmitButton();
+  });
+}
+
 const sendOfferError = (message) => {
   const errorTemplate = document.querySelector('#error').content;
   const errorElement = errorTemplate.cloneNode(true);
   const exitButton = errorElement.querySelector('.error__button');
   const errorContainer = errorElement.querySelector('.error');
+
   insertData(errorElement.querySelector('.error__message'), message, 'text');
   document.querySelector('body').append(errorContainer);
 
@@ -79,4 +101,4 @@ const sendOfferError = (message) => {
 };
 
 
-export {createOfferImg, showAlert, sendOfferError, insertData, unblockSubmitButton, blockSubmitButton};
+export {createOfferImg, showAlert, sendOfferError, insertData, blockSubmitButton, sendOfferSuccess};
