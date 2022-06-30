@@ -9,14 +9,14 @@ function getOffersFromServer(onSuccess, onFail) {
     });
 }
 
-function sendOfferToServer(onSuccess, onFail, data) {
+function sendOfferToServer(onSuccess, onFail, data, evt) {
   fetch('https://26.javascript.pages.academy/keksobooking', {
     method: 'POST',
     body: data
   })
     .then((response) => {
       if (response.ok) {
-        onSuccess('Объявление добавлено');
+        onSuccess('Объявление добавлено', evt);
       } else {
         onFail('Не удалось отправить форму, попробуйте еще раз');
       }

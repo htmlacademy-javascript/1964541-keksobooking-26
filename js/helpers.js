@@ -57,7 +57,7 @@ function insertData(offerTemplateElement, offerData, param) {
   }
 }
 
-function sendOfferSuccess(message) {
+function sendOfferSuccess(message, evt) {
   const successTemplate = document.querySelector('#success').content;
   const successElement = successTemplate.cloneNode(true);
   const successContainer = successElement.querySelector('.success');
@@ -76,6 +76,8 @@ function sendOfferSuccess(message) {
     successContainer.remove();
     unblockSubmitButton();
   });
+
+  evt.target.reset();
 }
 
 const sendOfferError = (message) => {
