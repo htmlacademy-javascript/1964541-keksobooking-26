@@ -1,5 +1,8 @@
+const SERVER_INPUT_URL = 'https://26.javascript.pages.academy/keksobooking';
+const SERVER_DATA_URL = 'https://26.javascript.pages.academy/keksobooking/data';
+
 function getOffersFromServer(onSuccess, onFail) {
-  fetch('https://26.javascript.pages.academy/keksobooking/data')
+  fetch(SERVER_DATA_URL)
     .then((response) => response.json())
     .then(onSuccess)
     .catch(() => {
@@ -8,7 +11,7 @@ function getOffersFromServer(onSuccess, onFail) {
 }
 
 function sendOfferToServer(onSuccess, onFail, data) {
-  return fetch('https://26.javascript.pages.academy/keksobooking', {
+  return fetch(SERVER_INPUT_URL, {
     method: 'POST',
     body: data
   })

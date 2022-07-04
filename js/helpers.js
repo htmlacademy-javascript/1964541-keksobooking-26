@@ -5,6 +5,7 @@ function createOfferImg (src, cord, index) {
   element.alt = `Фото ${index} объявления ${cord}`;
   element.style.width = '45px';
   element.style.height = '40px';
+
   return element;
 }
 
@@ -12,7 +13,7 @@ const ALERT_SHOW_TIME = 500;
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
-  
+
   alertContainer.style.zIndex = '100';
   alertContainer.style.position = 'absolute';
   alertContainer.style.left = '0';

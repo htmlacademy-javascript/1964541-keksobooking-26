@@ -84,11 +84,13 @@ form.addEventListener('change', (evt) => {
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
-
+  const {target} = evt;
   if (isValid) {
     blockSubmitButton();
     (sendOfferToServer(sendOfferSuccess, sendOfferError, new FormData(evt.target)))
-      .then(evt.target.reset);
+      .then(() => {
+        target.reset();
+      });
   }
 });
 
