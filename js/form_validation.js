@@ -88,9 +88,7 @@ form.addEventListener('submit', (evt) => {
   if (isValid) {
     blockSubmitButton();
     (sendOfferToServer(sendOfferSuccess, sendOfferError, new FormData(evt.target)))
-      .then(() => {
-        evt.target.reset();
-      });
+      .then(evt.target.reset);
   }
 });
 
