@@ -12,6 +12,7 @@ const ALERT_SHOW_TIME = 500;
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
+  
   alertContainer.style.zIndex = '100';
   alertContainer.style.position = 'absolute';
   alertContainer.style.left = '0';
