@@ -1,9 +1,7 @@
 function getOffersFromServer(onSuccess, onFail) {
   fetch('https://26.javascript.pages.academy/keksobooking/data')
     .then((response) => response.json())
-    .then((serverOffers) => {
-      onSuccess(serverOffers);
-    })
+    .then(onSuccess)
     .catch(() => {
       onFail('Не удалось отправить форму');
     });
