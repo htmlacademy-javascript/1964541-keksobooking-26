@@ -6,7 +6,7 @@ function getOffersFromServer(onSuccess, onFail) {
     .then((response) => response.json())
     .then(onSuccess)
     .catch(() => {
-      onFail('Не удалось отправить форму');
+      onFail('Не удалось загрузить объявления');
     });
 }
 

@@ -9,8 +9,6 @@ function createOfferImg (src, cord, index) {
   return element;
 }
 
-const ALERT_SHOW_TIME = 500;
-
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
 
@@ -28,9 +26,15 @@ const showAlert = (message) => {
 
   document.body.append(alertContainer);
 
-  setTimeout(() => {
+  document.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      alertContainer.remove();
+    }
+  });
+
+  document.addEventListener('click', () => {
     alertContainer.remove();
-  }, ALERT_SHOW_TIME);
+  });
 };
 
 const submitButton = document.querySelector('.ad-form__submit');
