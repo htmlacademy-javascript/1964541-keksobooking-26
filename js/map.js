@@ -7,6 +7,7 @@ import {showAlert} from './helpers.js';
 deactivatePage();
 
 const MAP_ZOOM = 9;
+const OFFER_MAX_COUNT = 10;
 const MAP_PICTURE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const DEFAULT_LOCATION = {
   lat: 35.74375,
@@ -56,20 +57,31 @@ mainMarker.on('moveend', (evt) => {
 
 const allMarkersGroup = L.layerGroup().addTo(map);
 
+function offerFilter (offer) {
+  const filterTypeName = document.querySelector('#housing-type');
+  if (offer.offer.type === filterTypeName.value) {
+    return true;
+  }
+}
+
 const createMarkers = (offers) => {
-  offers.forEach((offer) => {
-    const offersMarker = L.marker(
-      {
-        lat: offer.location.lat,
-        lng: offer.location.lng,
-      },
-      {
-        icon: offersPinIcon
-      });
-
-    offersMarker.addTo(allMarkersGroup).bindPopup(createPopup(offer));
-  });
+  offers
+    .filter(offerFilter)
+    .slice(0, OFFER_MAX_COUNT)
+    .forEach((offer) => {
+      const offersMarker = L.marker(
+        {
+          lat: offer.location.lat,
+          lng: offer.location.lng,
+        },
+        {
+          icon: offersPinIcon
+        });
+      offersMarker.addTo(allMarkersGroup).bindPopup(createPopup(offer));
+    });
 };
-
-getOffersFromServer(createMarkers, showAlert);
+const filterTypeName = document.querySelector('#housing-type');
+filterTypeName.addEventListener('change', () => {
+  getOffersFromServer(createMarkers, showAlert);
+});
 
