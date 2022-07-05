@@ -57,16 +57,22 @@ mainMarker.on('moveend', (evt) => {
 
 const allMarkersGroup = L.layerGroup().addTo(map);
 
-function offerFilter (offer) {
-  const filterTypeName = document.querySelector('#housing-type');
-  if (offer.offer.type === filterTypeName.value) {
-    return true;
+const filterTypeName = document.querySelector('#housing-type');
+const filterRooms = document.querySelector('#housing-rooms');
+
+function offerFilterType (offer, filterTypeNameValue, filterRoomsValue) {
+  if (offer.offer.type === filterTypeNameValue || filterTypeNameValue === 'any') {
+    if (offer.offer.rooms === filterRoomsValue || filterRoomsValue === 'any') {
+      return true;
+    }
   }
 }
 
+
 const createMarkers = (offers) => {
   offers
-    .filter(offerFilter)
+    .slice()
+    .filter(() => offerFilterType(offer, filterTypeName, filterRooms))
     .slice(0, OFFER_MAX_COUNT)
     .forEach((offer) => {
       const offersMarker = L.marker(
@@ -80,7 +86,7 @@ const createMarkers = (offers) => {
       offersMarker.addTo(allMarkersGroup).bindPopup(createPopup(offer));
     });
 };
-const filterTypeName = document.querySelector('#housing-type');
+
 filterTypeName.addEventListener('change', () => {
   getOffersFromServer(createMarkers, showAlert);
 });
