@@ -1,5 +1,4 @@
-import {crateAvailableOffers} from './data.js';
-import {createOfferImg} from './helpers.js';
+import {createOfferImg, insertData} from './helpers.js';
 
 const RusType = {
   bungalow: 'Бунгало',
@@ -9,44 +8,30 @@ const RusType = {
   palace: 'Дворец'
 };
 
-const generatedOffers = crateAvailableOffers();
-const offersTemplate = document.querySelector('#card').content.querySelector('.popup');
-const offersListFragment = document.createDocumentFragment();
-
-function insertData(offerTemplateElement, offerData, param) {
-  if (offerData && param === 'text') {
-    offerTemplateElement.textContent = offerData;
-  } else if (offerData && param === 'src') {
-    offerTemplateElement.src = offerData;
-  } else {
-    offerTemplateElement.classList.add('hidden');
-  }
-}
-
-function createPopup(template, generatedOffer) {
-
+function createPopup(offerFromServer) {
+  const offersTemplate = document.querySelector('#card').content.querySelector('.popup');
   const offerElement = offersTemplate.cloneNode(true);
 
-  insertData(offerElement.querySelector('.popup__text--price'), `${generatedOffer.offer.price}₽/ночь`, 'text');
-  insertData(offerElement.querySelector('.popup__avatar'), generatedOffer.author.avatar, 'src');
-  insertData(offerElement.querySelector('.popup__title'), generatedOffer.offer.title, 'text');
-  insertData(offerElement.querySelector('.popup__text--address'), generatedOffer.offer.address, 'text');
-  insertData(offerElement.querySelector('.popup__text--capacity'), `${generatedOffer.offer.rooms} комнаты для ${generatedOffer.offer.guest} гостей`, 'text');
-  insertData(offerElement.querySelector('.popup__text--time'), `Заезд после ${generatedOffer.offer.checkIn}, выезд до ${generatedOffer.offer.checkOut}`, 'text');
-  insertData(offerElement.querySelector('.popup__description'), generatedOffer.offer.description, 'text');
-  insertData(offerElement.querySelector('.popup__type'), RusType[generatedOffer.offer.type], 'text');
+  insertData(offerElement.querySelector('.popup__text--price'), `${offerFromServer.offer.price}₽/ночь`, 'text');
+  insertData(offerElement.querySelector('.popup__avatar'), offerFromServer.author.avatar, 'src');
+  insertData(offerElement.querySelector('.popup__title'), offerFromServer.offer.title, 'text');
+  insertData(offerElement.querySelector('.popup__text--address'), offerFromServer.offer.address, 'text');
+  insertData(offerElement.querySelector('.popup__text--capacity'), `${offerFromServer.offer.rooms} комнаты для ${offerFromServer.offer.guests} гостей`, 'text');
+  insertData(offerElement.querySelector('.popup__text--time'), `Заезд после ${offerFromServer.offer.checkin}, выезд до ${offerFromServer.offer.checkout}`, 'text');
+  insertData(offerElement.querySelector('.popup__description'), offerFromServer.offer.description, 'text');
+  insertData(offerElement.querySelector('.popup__type'), RusType[offerFromServer.offer.type], 'text');
 
-  if (generatedOffer.offer.photos) {
+  if (offerFromServer.offer.photos) {
     const photoContainer = offerElement.querySelector('.popup__photos');
-    generatedOffer.offer.photos.forEach((photo, index) => {
-      photoContainer.append(createOfferImg(photo, index, generatedOffer.offer.address));
+    offerFromServer.offer.photos.forEach((photo, index) => {
+      photoContainer.append(createOfferImg(photo, index, offerFromServer.offer.address));
     });
   }
 
   const featuresList = offerElement.querySelectorAll('.popup__feature');
-  if (generatedOffer.offer.features) {
+  if (offerFromServer.offer.features) {
     featuresList.forEach((featuresListItem) => {
-      const isNecessary = generatedOffer.offer.features.some((feature) => featuresListItem.classList.contains(`popup__feature--${feature}`));
+      const isNecessary = offerFromServer.offer.features.some((feature) => featuresListItem.classList.contains(`popup__feature--${feature}`));
       if (!isNecessary) {
         featuresListItem.remove();
       }
@@ -60,9 +45,4 @@ function createPopup(template, generatedOffer) {
   return offerElement;
 }
 
-generatedOffers.forEach((generatedOffer) => {
-  const popup = createPopup(offersTemplate, generatedOffer);
-  offersListFragment.append(popup);
-});
-
-export {createPopup, generatedOffers, offersTemplate};
+export {createPopup};

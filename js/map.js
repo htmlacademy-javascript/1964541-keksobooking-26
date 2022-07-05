@@ -1,5 +1,8 @@
 import {activatePage, deactivatePage} from './form.js';
-import {createPopup, generatedOffers, offersTemplate} from './offers.js';
+import {createPopup} from './offers.js';
+import {AFTER_COMMA_NUM} from './consts.js';
+import {getOffersFromServer} from './serverConnectionAPI.js';
+import {showAlert} from './helpers.js';
 
 deactivatePage();
 
@@ -47,25 +50,26 @@ const mainMarker = L.marker(
 mainMarker.addTo(map);
 
 mainMarker.on('moveend', (evt) => {
-  const { lat, lng } = evt.target.getLatLng();
-  addressContainer.value = `${lat.toFixed(5)  },${  lng.toFixed(5)}` ;
+  const {lat, lng} = evt.target.getLatLng();
+  addressContainer.value = `${lat.toFixed(AFTER_COMMA_NUM)},${lng.toFixed(AFTER_COMMA_NUM)}`;
 });
 
 const allMarkersGroup = L.layerGroup().addTo(map);
 
-const createMarker = (offer) => {
-  const offersMarker = L.marker(
-    {
-      lat: offer.location.lat,
-      lng: offer.location.lng,
-    },
-    {
-      icon: offersPinIcon
-    });
+const createMarkers = (offers) => {
+  offers.forEach((offer) => {
+    const offersMarker = L.marker(
+      {
+        lat: offer.location.lat,
+        lng: offer.location.lng,
+      },
+      {
+        icon: offersPinIcon
+      });
 
-  offersMarker.addTo(allMarkersGroup).bindPopup(createPopup(offersTemplate, offer));
+    offersMarker.addTo(allMarkersGroup).bindPopup(createPopup(offer));
+  });
 };
 
-generatedOffers.forEach((generatedOffer) => {
-  createMarker(generatedOffer);
-});
+getOffersFromServer(createMarkers, showAlert);
+

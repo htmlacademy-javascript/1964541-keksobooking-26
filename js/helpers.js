@@ -1,43 +1,3 @@
-function getRandomInt(firstNum, secondNum) {
-  return Math.abs(Math.floor(Math.random() * (secondNum - firstNum + 1)) + firstNum);
-}
-
-function getRandomFloat(firstNum, secondNum, afterCommaNum) {
-  return firstNum === secondNum ? firstNum : Math.abs(((Math.random() * (firstNum - secondNum + 1) + secondNum).toFixed(afterCommaNum)));
-}
-
-function shuffleArray(array) { //"Тасование Фишера - Йетса (стырил)"
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
-function randomAvatar(randomInt) {
-  randomInt = getRandomInt(1, 10);
-  return randomInt === 10 ? 'img/avatars/user10.png' : `img/avatars/user0${randomInt}.png`;
-}
-
-function getRandomGuest(room) {
-  switch (room) {
-    case 1:
-      return 1;
-    case 2:
-      return getRandomInt(1, 2);
-    case 3:
-      return getRandomInt(1, 3);
-    case 100:
-      return 'не для гостей';
-    default: //решил что максимум гостей будет 10)
-      return getRandomInt(1, 10);
-  }
-}
-
-function getRandomArrayElement (array) {
-  return array[getRandomInt(0, array.length - 1)];
-}
-
 function createOfferImg (src, cord, index) {
   const element = document.createElement('img');
   element.classList.add('.popup__photo');
@@ -45,7 +5,107 @@ function createOfferImg (src, cord, index) {
   element.alt = `Фото ${index} объявления ${cord}`;
   element.style.width = '45px';
   element.style.height = '40px';
+
   return element;
 }
 
-export {shuffleArray, getRandomArrayElement, getRandomInt, getRandomFloat, randomAvatar, getRandomGuest, createOfferImg};
+const showAlert = (message) => {
+  const alertContainer = document.createElement('div');
+
+  alertContainer.style.zIndex = '100';
+  alertContainer.style.position = 'absolute';
+  alertContainer.style.left = '0';
+  alertContainer.style.top = '0';
+  alertContainer.style.right = '0';
+  alertContainer.style.padding = '10px 3px';
+  alertContainer.style.fontSize = '30px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'red';
+
+  alertContainer.textContent = message;
+
+  document.body.append(alertContainer);
+
+  document.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      alertContainer.remove();
+    }
+  });
+
+  document.addEventListener('click', () => {
+    alertContainer.remove();
+  });
+};
+
+const submitButton = document.querySelector('.ad-form__submit');
+
+function blockSubmitButton() {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Публикую...';
+}
+
+function unblockSubmitButton() {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+}
+
+function isEscapeKey(evt) {
+  return evt.key === 'Escape';
+}
+
+function insertData(offerTemplateElement, offerData, param) {
+  if (offerData && param === 'text') {
+    offerTemplateElement.textContent = offerData;
+  } else if (offerData && param === 'src') {
+    offerTemplateElement.src = offerData;
+  } else {
+    offerTemplateElement.classList.add('hidden');
+  }
+}
+
+function sendOfferSuccess(message) {
+  const successTemplate = document.querySelector('#success').content;
+  const successElement = successTemplate.cloneNode(true);
+  const successContainer = successElement.querySelector('.success');
+
+  insertData(successElement.querySelector('.success__message'), message, 'text');
+  document.querySelector('body').append(successContainer);
+
+  document.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      successContainer.remove();
+      unblockSubmitButton();
+    }
+  });
+
+  successContainer.addEventListener('click', () => {
+    successContainer.remove();
+    unblockSubmitButton();
+  });
+
+}
+
+const sendOfferError = (message) => {
+  const errorTemplate = document.querySelector('#error').content;
+  const errorElement = errorTemplate.cloneNode(true);
+  const exitButton = errorElement.querySelector('.error__button');
+  const errorContainer = errorElement.querySelector('.error');
+
+  insertData(errorElement.querySelector('.error__message'), message, 'text');
+  document.querySelector('body').append(errorContainer);
+
+  document.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      errorContainer.remove();
+      unblockSubmitButton();
+    }
+  });
+
+  exitButton.addEventListener('click', () => {
+    errorContainer.remove();
+    unblockSubmitButton();
+  });
+};
+
+
+export {createOfferImg, showAlert, sendOfferError, insertData, blockSubmitButton, sendOfferSuccess};

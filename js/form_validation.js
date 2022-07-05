@@ -1,4 +1,6 @@
-import {MinPrice} from './data.js';
+import {MIN_PRICE} from './consts.js';
+import {sendOfferToServer} from './serverConnectionAPI.js';
+import {blockSubmitButton, sendOfferError, sendOfferSuccess} from './helpers.js';
 
 const GuestRoomsOptions = {
   '1': ['1'],
@@ -37,25 +39,25 @@ const typeName = form.querySelector('[name="type"]');
 const checkIn = form.querySelector('#timein');
 const checkOut = form.querySelector('#timeout');
 
-function validatePrice(value) {
-  return MinPrice[typeName.value] <= value && value <= MAX_PRICE;
+function validatePrice(priceFieldValue, typeNameValue) {
+  return MIN_PRICE[typeNameValue] <= priceFieldValue && priceFieldValue <= MAX_PRICE;
 }
 
-function validateGuests() {
-  return GuestRoomsOptions[roomsField.value].includes(guestsField.value);
+function validateGuests(roomsFieldValue, guestsFieldValue) {
+  return GuestRoomsOptions[roomsFieldValue].includes(guestsFieldValue);
 }
 
-function roomGuestsInvalidMessage () {
-  return `${RoomCount[roomsField.value]} не ${GuestCount[guestsField.value]}`;
+function roomGuestsInvalidMessage (roomsFieldValue, guestsFieldValue) {
+  return `${RoomCount[roomsFieldValue]} не ${GuestCount[guestsFieldValue]}`;
 }
 
-function priceInvalidMessage () {
-  return `Должно быть от ${MinPrice[typeName.value]} до ${MAX_PRICE}`;
+function priceInvalidMessage (typeNameValue) {
+  return `Должно быть от ${MIN_PRICE[typeNameValue]} до ${MAX_PRICE}`;
 }
 
-pristine.addValidator(guestsField, validateGuests, roomGuestsInvalidMessage);
-pristine.addValidator(roomsField, validateGuests, roomGuestsInvalidMessage);
-pristine.addValidator(priceField, validatePrice, priceInvalidMessage);
+pristine.addValidator(guestsField, (() => validateGuests(roomsField.value, guestsField.value)), (() => roomGuestsInvalidMessage(roomsField.value, guestsField.value)));
+pristine.addValidator(roomsField, (() => validateGuests(roomsField.value, guestsField.value)), (() => roomGuestsInvalidMessage(roomsField.value, guestsField.value)));
+pristine.addValidator(priceField, (() => validatePrice(priceField.value, typeName.value)), (() => priceInvalidMessage(typeName.value)));
 
 form.addEventListener('change', (evt) => {
   if (evt.target.matches('[name="rooms"]')) {
@@ -71,7 +73,7 @@ form.addEventListener('change', (evt) => {
     checkIn.value = checkOut.value;
   }
   if (evt.target.matches('[name="type"]')) {
-    priceField.placeholder = MinPrice[typeName.value];
+    priceField.placeholder = MIN_PRICE[typeName.value];
     pristine.validate(priceField);
   }
   if (evt.target.matches('[name="slider"]')) {
@@ -81,7 +83,15 @@ form.addEventListener('change', (evt) => {
 
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  pristine.validate();
+  const isValid = pristine.validate();
+  const {target} = evt;
+  if (isValid) {
+    blockSubmitButton();
+    (sendOfferToServer(sendOfferSuccess, sendOfferError, new FormData(evt.target)))
+      .then(() => {
+        target.reset();
+      });
+  }
 });
 
 export {MAX_PRICE};
