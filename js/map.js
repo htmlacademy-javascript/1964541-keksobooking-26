@@ -3,6 +3,7 @@ import {createPopup} from './offers.js';
 import {AFTER_COMMA_NUM} from './consts.js';
 import {getOffersFromServer} from './serverConnectionAPI.js';
 import {showAlert} from './helpers.js';
+import {offerFilterType} from './filter.js';
 
 deactivatePage();
 
@@ -13,6 +14,7 @@ const DEFAULT_LOCATION = {
   lat: 35.74375,
   lng: 139.77755
 };
+const filterForm = document.querySelector('.map__filters');
 
 const map = L.map('map-canvas').setView(DEFAULT_LOCATION, MAP_ZOOM);
 
@@ -55,24 +57,18 @@ mainMarker.on('moveend', (evt) => {
   addressContainer.value = `${lat.toFixed(AFTER_COMMA_NUM)},${lng.toFixed(AFTER_COMMA_NUM)}`;
 });
 
-const allMarkersGroup = L.layerGroup().addTo(map);
+let allMarkersGroup = L.layerGroup().addTo(map);
 
-const filterTypeName = document.querySelector('#housing-type');
-const filterRooms = document.querySelector('#housing-rooms');
-
-function offerFilterType (offer, filterTypeNameValue, filterRoomsValue) {
-  if (offer.offer.type === filterTypeNameValue || filterTypeNameValue === 'any') {
-    if (offer.offer.rooms === filterRoomsValue || filterRoomsValue === 'any') {
-      return true;
-    }
-  }
+function reloadMapMarkers () {
+  allMarkersGroup.remove();
+  allMarkersGroup = L.layerGroup().addTo(map);
 }
 
-
 const createMarkers = (offers) => {
+  reloadMapMarkers();
   offers
     .slice()
-    .filter(() => offerFilterType(offer, filterTypeName, filterRooms))
+    .filter(offerFilterType)
     .slice(0, OFFER_MAX_COUNT)
     .forEach((offer) => {
       const offersMarker = L.marker(
@@ -85,9 +81,12 @@ const createMarkers = (offers) => {
         });
       offersMarker.addTo(allMarkersGroup).bindPopup(createPopup(offer));
     });
+  map.closePopup();
 };
 
-filterTypeName.addEventListener('change', () => {
+getOffersFromServer(createMarkers, showAlert);
+
+filterForm.addEventListener('change', () => {
   getOffersFromServer(createMarkers, showAlert);
 });
 
