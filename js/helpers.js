@@ -1,4 +1,4 @@
-function createOfferImg (src, cord, index) {
+function createOfferImg(src, cord, index) {
   const element = document.createElement('img');
   element.classList.add('.popup__photo');
   element.src = src;
@@ -107,5 +107,13 @@ const sendOfferError = (message) => {
   });
 };
 
+function debounce(callback, timeoutDelay) {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
 
-export {createOfferImg, showAlert, sendOfferError, insertData, blockSubmitButton, sendOfferSuccess};
+
+export {createOfferImg, showAlert, sendOfferError, insertData, blockSubmitButton, sendOfferSuccess, debounce};

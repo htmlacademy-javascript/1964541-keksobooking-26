@@ -2,16 +2,20 @@ import {activatePage, deactivatePage} from './form.js';
 import {createPopup} from './offers.js';
 import {AFTER_COMMA_NUM} from './consts.js';
 import {getOffersFromServer} from './serverConnectionAPI.js';
-import {showAlert} from './helpers.js';
+import {showAlert, debounce} from './helpers.js';
+import {compareOffers, offerFilter} from './filter.js';
 
 deactivatePage();
 
 const MAP_ZOOM = 9;
+const OFFER_MAX_COUNT = 10;
+const RERENDER_DELAY = 500;
 const MAP_PICTURE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const DEFAULT_LOCATION = {
   lat: 35.74375,
   lng: 139.77755
 };
+const filterForm = document.querySelector('.map__filters');
 
 const map = L.map('map-canvas').setView(DEFAULT_LOCATION, MAP_ZOOM);
 
@@ -54,22 +58,40 @@ mainMarker.on('moveend', (evt) => {
   addressContainer.value = `${lat.toFixed(AFTER_COMMA_NUM)},${lng.toFixed(AFTER_COMMA_NUM)}`;
 });
 
-const allMarkersGroup = L.layerGroup().addTo(map);
+let allMarkersGroup = L.layerGroup().addTo(map);
+
+function reloadMapMarkers () {
+  allMarkersGroup.remove();
+  allMarkersGroup = L.layerGroup().addTo(map);
+}
 
 const createMarkers = (offers) => {
-  offers.forEach((offer) => {
-    const offersMarker = L.marker(
-      {
-        lat: offer.location.lat,
-        lng: offer.location.lng,
-      },
-      {
-        icon: offersPinIcon
-      });
-
-    offersMarker.addTo(allMarkersGroup).bindPopup(createPopup(offer));
-  });
+  reloadMapMarkers();
+  offers
+    .slice()
+    .sort(compareOffers)
+    .filter(offerFilter)
+    .slice(0, OFFER_MAX_COUNT)
+    .forEach((offer) => {
+      const offersMarker = L.marker(
+        {
+          lat: offer.location.lat,
+          lng: offer.location.lng,
+        },
+        {
+          icon: offersPinIcon
+        });
+      offersMarker.addTo(allMarkersGroup).bindPopup(createPopup(offer));
+    });
+  map.closePopup();
 };
 
-getOffersFromServer(createMarkers, showAlert);
+function renderOffersOnMap() {
+  getOffersFromServer(createMarkers, showAlert);
+  filterForm.addEventListener('change', () => {
+    getOffersFromServer(debounce(createMarkers, RERENDER_DELAY), showAlert);
+  });
+}
+
+renderOffersOnMap();
 
