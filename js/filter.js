@@ -2,7 +2,6 @@ const filterTypeName = document.querySelector('#housing-type');
 const filterRooms = document.querySelector('#housing-rooms');
 const filterGuests = document.querySelector('#housing-guests');
 const filterTypePrice = document.querySelector('#housing-price');
-const filterFeatures = document.querySelector('#housing-features');
 const filterFeaturesAll = document.querySelectorAll('.map__checkbox');
 
 function getCheckedFeatures() {
@@ -15,14 +14,21 @@ function getCheckedFeatures() {
   return checkedFeatures;
 }
 
+function contains(where, what){ //по идее эта функция проверяет наличие массива выбранных фич в массиве фич объявления
+  for(let i=0; i<what.length; i++){
+    if(where.indexOf(what[i]) === -1) {
+      return false;
+    }
+  }
+  return true;
+}
 
 function offerFilterFeatures(offer) {
   const checkedFeatures = getCheckedFeatures();
   if (checkedFeatures.length === 0) {
     return true;
   }
-  console.log(offer);
-  return offer.offer.features.includes(checkedFeatures);
+  contains(offer.offer.features, checkedFeatures);
 }
 
 
