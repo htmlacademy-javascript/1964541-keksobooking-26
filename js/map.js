@@ -2,13 +2,14 @@ import {activatePage, deactivatePage} from './form.js';
 import {createPopup} from './offers.js';
 import {AFTER_COMMA_NUM} from './consts.js';
 import {getOffersFromServer} from './serverConnectionAPI.js';
-import {showAlert} from './helpers.js';
-import {getCheckedFeatures, offerFilter} from './filter.js';
+import {showAlert, debounce} from './helpers.js';
+import {compareOffers, offerFilter} from './filter.js';
 
 deactivatePage();
 
 const MAP_ZOOM = 9;
 const OFFER_MAX_COUNT = 10;
+const RERENDER_DELAY = 500;
 const MAP_PICTURE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const DEFAULT_LOCATION = {
   lat: 35.74375,
@@ -68,6 +69,7 @@ const createMarkers = (offers) => {
   reloadMapMarkers();
   offers
     .slice()
+    .sort(compareOffers)
     .filter(offerFilter)
     .slice(0, OFFER_MAX_COUNT)
     .forEach((offer) => {
@@ -84,9 +86,12 @@ const createMarkers = (offers) => {
   map.closePopup();
 };
 
-getOffersFromServer(createMarkers, showAlert);
-
-filterForm.addEventListener('change', () => {
+function renderOffersOnMap() {
   getOffersFromServer(createMarkers, showAlert);
-});
+  filterForm.addEventListener('change', () => {
+    getOffersFromServer(debounce(createMarkers, RERENDER_DELAY), showAlert);
+  });
+}
+
+renderOffersOnMap();
 

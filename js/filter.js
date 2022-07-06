@@ -14,20 +14,25 @@ function getCheckedFeatures() {
   return checkedFeatures;
 }
 
-function offerFilterFeatures(offer) {
+function getFeaturesRank(offer) {
   const checkedFeatures = getCheckedFeatures();
-  if (checkedFeatures.length === 0) {
-    return true;
-  }
-  if (offer.offer.features) {
+  let rank = 0;
+  if (offer.offer.features && checkedFeatures) {
     for (let i = 0; i < checkedFeatures.length; i++) {
       if (offer.offer.features.includes(checkedFeatures[i])) {
-        return true;
+        rank += 1;
       }
     }
   }
+  return rank;
 }
 
+const compareOffers = (offerA, offerB) => {
+  const rankA = getFeaturesRank(offerA);
+  const rankB = getFeaturesRank(offerB);
+
+  return rankB - rankA;
+};
 
 function offerFilterPrice(offer) {
   if (filterTypePrice.value === 'any') {
@@ -63,9 +68,9 @@ function offerFilterGuests(offer) {
 }
 
 function offerFilter(offer) {
-  if (offerFilterType(offer) && offerFilterGuests(offer) && offerFilterRooms(offer) && offerFilterPrice(offer) && offerFilterFeatures(offer)) {
+  if (offerFilterType(offer) && offerFilterGuests(offer) && offerFilterRooms(offer) && offerFilterPrice(offer)) {
     return true;
   }
 }
 
-export {offerFilter, getCheckedFeatures};
+export {offerFilter, compareOffers};
