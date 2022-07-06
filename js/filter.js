@@ -14,21 +14,18 @@ function getCheckedFeatures() {
   return checkedFeatures;
 }
 
-function contains(where, what){ //по идее эта функция проверяет наличие массива выбранных фич в массиве фич объявления
-  for(let i=0; i<what.length; i++){
-    if(where.indexOf(what[i]) === -1) {
-      return false;
-    }
-  }
-  return true;
-}
-
 function offerFilterFeatures(offer) {
   const checkedFeatures = getCheckedFeatures();
   if (checkedFeatures.length === 0) {
     return true;
   }
-  contains(offer.offer.features, checkedFeatures);
+  if (offer.offer.features) {
+    for (let i = 0; i < checkedFeatures.length; i++) {
+      if (offer.offer.features.includes(checkedFeatures[i])) {
+        return true;
+      }
+    }
+  }
 }
 
 
