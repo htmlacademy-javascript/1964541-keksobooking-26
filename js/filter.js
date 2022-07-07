@@ -4,6 +4,9 @@ const filterGuests = document.querySelector('#housing-guests');
 const filterTypePrice = document.querySelector('#housing-price');
 const filterFeaturesAll = document.querySelectorAll('.map__checkbox');
 
+const HIGH_PRICE = 50000;
+const MIDDLE_PRICE = 10000;
+
 function getCheckedFeatures() {
   const checkedFeatures = [];
   filterFeaturesAll.forEach((feature) => {
@@ -11,12 +14,14 @@ function getCheckedFeatures() {
       checkedFeatures.push(feature.value);
     }
   });
+
   return checkedFeatures;
 }
 
 function getFeaturesRank(offer) {
   const checkedFeatures = getCheckedFeatures();
   let rank = 0;
+
   if (offer.offer.features && checkedFeatures) {
     for (let i = 0; i < checkedFeatures.length; i++) {
       if (offer.offer.features.includes(checkedFeatures[i])) {
@@ -24,6 +29,7 @@ function getFeaturesRank(offer) {
       }
     }
   }
+
   return rank;
 }
 
@@ -38,39 +44,34 @@ function offerFilterPrice(offer) {
   if (filterTypePrice.value === 'any') {
     return true;
   }
-  if (filterTypePrice.value === 'middle' && 10000 < offer.offer.price && offer.offer.price < 50000) {
+
+  if (filterTypePrice.value === 'middle' && MIDDLE_PRICE < offer.offer.price && offer.offer.price < HIGH_PRICE) {
     return true;
   }
-  if (filterTypePrice.value === 'low' && offer.offer.price < 10000) {
+
+  if (filterTypePrice.value === 'low' && offer.offer.price < MIDDLE_PRICE) {
     return true;
   }
-  if (filterTypePrice.value === 'high' && offer.offer.price > 50000) {
+
+  if (filterTypePrice.value === 'high' && offer.offer.price > HIGH_PRICE) {
     return true;
   }
 }
 
 function offerFilterType(offer) {
-  if (offer.offer.type === filterTypeName.value || filterTypeName.value === 'any') {
-    return true;
-  }
+  return offer.offer.type === filterTypeName.value || filterTypeName.value === 'any';
 }
 
 function offerFilterRooms(offer) {
-  if (offer.offer.rooms.toString() === filterRooms.value || filterRooms.value === 'any') {
-    return true;
-  }
+  return offer.offer.rooms.toString() === filterRooms.value || filterRooms.value === 'any';
 }
 
 function offerFilterGuests(offer) {
-  if (offer.offer.guests.toString() === filterGuests.value || filterGuests.value === 'any') {
-    return true;
-  }
+  return offer.offer.guests.toString() === filterGuests.value || filterGuests.value === 'any';
 }
 
 function offerFilter(offer) {
-  if (offerFilterType(offer) && offerFilterGuests(offer) && offerFilterRooms(offer) && offerFilterPrice(offer)) {
-    return true;
-  }
+  return offerFilterType(offer) && offerFilterGuests(offer) && offerFilterRooms(offer) && offerFilterPrice(offer);
 }
 
 export {offerFilter, compareOffers};
