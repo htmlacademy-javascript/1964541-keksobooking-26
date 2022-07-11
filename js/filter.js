@@ -18,27 +18,22 @@ function getCheckedFeatures() {
   return checkedFeatures;
 }
 
-function getFeaturesRank(offer) {
+function offerFilterFeatures(offer) {
   const checkedFeatures = getCheckedFeatures();
-  let rank = 0;
+  let counter = 0;
 
   if (offer.offer.features && checkedFeatures) {
     for (let i = 0; i < checkedFeatures.length; i++) {
       if (offer.offer.features.includes(checkedFeatures[i])) {
-        rank += 1;
+        counter += 1;
       }
     }
+    if (offer.offer.features.length === counter) {
+      return true;
+    }
   }
-
-  return rank;
+  return checkedFeatures.length === 0;
 }
-
-const compareOffers = (offerA, offerB) => {
-  const rankA = getFeaturesRank(offerA);
-  const rankB = getFeaturesRank(offerB);
-
-  return rankB - rankA;
-};
 
 function offerFilterPrice(offer) {
   if (filterTypePrice.value === 'any') {
@@ -71,7 +66,7 @@ function offerFilterGuests(offer) {
 }
 
 function offerFilter(offer) {
-  return offerFilterType(offer) && offerFilterGuests(offer) && offerFilterRooms(offer) && offerFilterPrice(offer);
+  return offerFilterType(offer) && offerFilterGuests(offer) && offerFilterRooms(offer) && offerFilterPrice(offer) && offerFilterFeatures(offer);
 }
 
-export {offerFilter, compareOffers};
+export {offerFilter};
