@@ -20,18 +20,11 @@ function getCheckedFeatures() {
 
 function offerFilterFeatures(offer) {
   const checkedFeatures = getCheckedFeatures();
-  let counter = 0;
 
   if (offer.offer.features && checkedFeatures) {
-    for (let i = 0; i < checkedFeatures.length; i++) {
-      if (offer.offer.features.includes(checkedFeatures[i])) {
-        counter += 1;
-      }
-    }
-    if (offer.offer.features.length === counter) {
-      return true;
-    }
+    return checkedFeatures.every((item) => offer.offer.features.indexOf(item) !== -1);
   }
+
   return checkedFeatures.length === 0;
 }
 
