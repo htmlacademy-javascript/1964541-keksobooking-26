@@ -3,7 +3,7 @@ import {createPopup} from './offers.js';
 import {AFTER_COMMA_NUM} from './consts.js';
 import {getOffersFromServer} from './serverConnectionAPI.js';
 import {showAlert, debounce} from './helpers.js';
-import {compareOffers, offerFilter} from './filter.js';
+import {offerFilter} from './filter.js';
 
 deactivatePage();
 
@@ -69,7 +69,6 @@ const createMarkers = (offers) => {
   reloadMapMarkers();
   offers
     .slice()
-    .sort(compareOffers)
     .filter(offerFilter)
     .slice(0, OFFER_MAX_COUNT)
     .forEach((offer) => {
